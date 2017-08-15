@@ -34,19 +34,21 @@ var ranQuesAnsInd = ranObject.answer; //index of answer
 var ranQuesAnsStr = ranObject.options[ranQuesAnsInd]; //string of answer
 var ranQuesOp = ranObject.options //list of options
 var ranQuesImg = ranObject.image;
-var otionId = 0;
+var optionId = 0;
+var unansQuesArray = [];
+var ansQuesArray = [];
 var win = 0;
 var loss = 0;
 var showAnsDet;
 var state = "beforeGame";
 
-console.log(questions[1].question + " " + questions[1].options);
-console.log(ranObject);
-console.log(ranQuestion);
-console.log(ranQuesOp);
-console.log(ranQuesAnsInd);
-console.log(ranQuesAnsStr);
-console.log(ranQuesImg);
+console.log("first", questions[1].question + " " + questions[1].options);
+console.log("first", ranObject);
+console.log("first", ranQuestion);
+console.log("first", ranQuesOp);
+console.log("first", ranQuesAnsInd);
+console.log("first", ranQuesAnsStr);
+console.log("first", ranQuesImg);
 //functions
 
 //state BeforeGame:
@@ -71,42 +73,11 @@ console.log(ranQuesImg);
 
 		questionGen();
 
-		//choices are on clicks
-		$(".option" ).on("click", function() {
-			optionId = $(this).attr("id");
-			console.log(optionId);
-
-		//if onclick is true then correct
-			if (optionId == ranQuesAnsInd) {
-				$("#question").remove();
-				$(".option").remove();
-				//display correct for 4 seconds then new question
-				correct();
-				setTimeout(questionGen, 3000);
-				win++;
-
-				//correct();
-			}
-		//if onclick is false then wrong
-			else {
-				$("#question").remove();
-				$(".option").remove();
-				//display wrong for 4 seconds then new question
-				wrong();
-				setTimeout(questionGen, 3000);
-				loss++;
-			}
-		});
-
-		//if timout == 0 then unanswered
 		}
 
 	//questionGen
 	//generates the same question again need to randomize
 	function questionGen() {
-	// remove previous answer from screen
-		$("#correct").remove();
-		$("#wrong").remove();
 	//diplay random timer & questions
 		var question = $("<h3>");
 		$(question).attr("id", "question");
@@ -125,7 +96,60 @@ console.log(ranQuesImg);
 		$(".option" ).on("click", function() {
 			optionId = $(this).attr("id");
 			console.log(optionId);
+
+			//if onclick is true then correct
+			if (optionId == ranQuesAnsInd) {
+				$("#question").remove();
+				$(".option").remove();
+				//display correct for 3 seconds then new question
+				correct();
+				setTimeout(nextQuestionGen, 3000);//calls next question after 3sec
+				win++;
+
+			}
+			//if onclick is false then wrong
+			else {
+				$("#question").remove();
+				$(".option").remove();
+				//display wrong for 3 seconds then new question
+				wrong();
+				setTimeout(nextQuestionGen, 3000);//calls next question after 3sec
+				loss++;
+			}
+			//if timout == 0 then unanswered
+
 		});
+
+		//inGame();
+	}
+
+		function nextQuestionGen() {
+	// remove previous answer from screen
+		$("#correct").remove();
+		$("#wrong").remove();
+		$("#question").remove();
+		$(".option").remove();
+		ranNum = Math.floor(Math.random() * 4) + 1;
+		ranObject = questions[ranNum];
+		ranQuestion = ranObject.question;
+		ranQuesAnsInd = ranObject.answer; //index of answer
+		ranQuesAnsStr = ranObject.options[ranQuesAnsInd]; //string of answer
+		ranQuesOp = ranObject.options //list of options
+		ranQuesImg = ranObject.image;
+		//ansQuesArray.push(ranObject);
+		//ansQuesArray.push();
+
+
+		console.log("next", ranObject);
+		console.log("next", ranQuestion);
+		console.log("next", ranQuesOp);
+		console.log("next", ranQuesAnsInd);
+		console.log("next", ranQuesAnsStr);
+		console.log("next", ranQuesImg);
+		console.log("used array", ansQuesArray);
+
+		// if (ansQuesArray.length == number of objects then gameOver) 
+		questionGen();
 	}
 
 	//correct
@@ -145,7 +169,7 @@ console.log(ranQuesImg);
 		var wrong = $("<h4>");
 		$(wrong).attr("id", "wrong");
 		$(wrong).html("Wrong! the answer was: " + ranQuesAnsStr);
-		$("#questionSec").append(wrong);		
+		$("#questionSec").append(wrong);
 	}
 
 	//timout, decrement 30seconds
