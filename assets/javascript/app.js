@@ -46,7 +46,7 @@ var ranQuesImg;
 	function beforeGame(){
 		var startBtn = $("<button>");
 		$(startBtn).attr("id", "start");
-		$(startBtn).addClass("btn btn-danger number");
+		$(startBtn).addClass("btn btn-info number");
 		$(startBtn).attr("value", "start");
 		$(startBtn).html("<h3>START!</h3>");
 		$("#startSec").append(startBtn);
@@ -111,32 +111,14 @@ var ranQuesImg;
 				//	Check random number in  random answers array?
 			}
 			ansQuesArray.push(ranNum);
+			questionGen(ranNum);
+
 		}else{
-			alert("Game Over");
+			gameOver();
 		}
 
 		console.log("ques array", ansQuesArray);
 
-		questionGen(ranNum);
-
-
-		// ranObject = questions[ranNum];
-		// ranQuestion = ranObject.question;
-		// ranQuesAnsInd = ranObject.answer; //index of answer
-		// ranQuesAnsStr = ranObject.options[ranQuesAnsInd]; //string of answer
-		// ranQuesOp = ranObject.options //list of options
-		// ranQuesImg = questions[ranNum].image;
-		
-		
-		// console.log("next", ranObject);
-		// console.log("next", ranQuestion);
-		// console.log("next", ranQuesOp);
-		// console.log("next", ranQuesAnsInd);
-		// console.log("next", ranQuesAnsStr);
-		// console.log("next", ranQuesImg);
-		// console.log("ques array", ansQuesArray);
-
-		// if (ansQuesArray.length == number of objects then gameOver) 
 	}
 
 	//correct
@@ -169,13 +151,24 @@ var ranQuesImg;
 
 //state GameOver: How you did, Correct Answers, Incorrect Answers, Unanswered
 	function gameOver() {
+		console.log("game over");
+		console.log("win ", win);
+		console.log("loss ", loss);
+		$("#question").remove();
+		$(".option").remove();
+		var stats = $("<h4>");
+		$(stats).attr("id", "stats");
+		$(stats).html("Correct: " + win + "<br> Wrong: " + loss + "<br> Unanswered: ");
+		$("#questionSec").append(stats);
+		gameReset();
 	//game stats
 	//start over button
 		//clears game and starts over	
 	}
 
 	function gameReset() {
-
+		console.log("reset");
+		beforeGame();
 	}
 
 		//choices are on clicks

@@ -1,0 +1,20 @@
+body {
+	background-image: url(../images/background.png);
+	background-size:cover;
+}
+
+.questionSec {
+	font-family: 'Press Start 2P', cursive;
+	color: Maroon;
+	font-size: 25px
+}
+.charBtn {
+	opacity: 1.0;
+	filter: alpha(opacity=1.0);
+}
+
+.charBtn:hover {
+	opacity: 0.85;
+	filter: alpha(opacity=85);
+}
+
