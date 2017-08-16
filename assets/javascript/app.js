@@ -97,18 +97,24 @@ var ranQuesImg;
 		$(".option").remove();
 		//$("")of img.remove();
 		ranNum = Math.floor(Math.random() * 4) + 1;
+		console.log("second random", ranNum);
 		// Repeat until random answers array length = 4
 		var indexTest=ansQuesArray.indexOf(ranNum)
-		console.log("indexOf: ",indexTest);
+		console.log("indexOf: ", indexTest);
+
 		if (ansQuesArray.length < numberOfQues) {
 			// Generate random number between 1 and 4
-			while(ansQuesArray.indexOf(ranNum) == -1)
-			ranNum = Math.floor(Math.random() * 4) + 1;
+			while(indexTest != -1) {
+			ranNum = Math.floor(Math.random() * 4) + 1;//issue
+			indexTest = ansQuesArray.indexOf(ranNum);
+			console.log("whileloop random", ranNum);
 				//	Check random number in  random answers array?
+			}
+			ansQuesArray.push(ranNum);
 		}else{
 			alert("Game Over");
 		}
-		ansQuesArray.push(ranNum);
+
 		console.log("ques array", ansQuesArray);
 
 		questionGen(ranNum);
