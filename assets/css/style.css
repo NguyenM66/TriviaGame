@@ -12,8 +12,13 @@ body {
 	text-shadow: 4px 4px 4px #aaa;
 }
 
+p{
+	font-size: 20px;
+}
+
 p:hover { 
     color: #82d8dc;
+    font-size: 20px;
 }
 
 #startSec, #timerSec, #questionSec {

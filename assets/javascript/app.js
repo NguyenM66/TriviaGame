@@ -19,28 +19,28 @@ $(document).ready(function() {
 //objects 
 var questions = {
 	1: {
-		question: "What does the Fox say?",
-		options: ["Moo", "Woof", "Hi", "RingDing"],
-		answer: 3,
-		image: "",
+		question: "This is the story of a young witch learning magic in the big city. Which movie is this?",
+		options: ["My Neighbor Totoro", "Nausicaä and the Valley of the Wind", "Kiki's Delivery Service", "The Cat Returns"],
+		answer: 2,
+		image: "assets/images/kiki.gif",
 	},
 	2: {
-		question: "What does the Dog say?",
-		options: ["Moo", "Woof", "Hi", "RingDing"],
+		question: "I am a Princess of Humans who was raised by a God of the Forest. Who am I?",
+		options: ["Chihiro", "Mononoke", "Sen", "Sheeta"],
 		answer: 1,
-		image: "",
+		image: "assets/images/mononoke.gif",
 	},
 	3: {
-		question: "What does the Cow say?",
-		options: ["Moo", "Woof", "Hi", "RingDing"],
+		question: "In this world, humans will dissapear if they don't eat the food by nightfall. Which movie is this?",
+		options: ["Spirited Away", "Piggy's Journey", "Porco Rosso", "The Sky's the Limit"],
 		answer: 0,
-		image: "",
+		image: "assets/images/spirited.gif",
 	},
 	4: {
-		question: "What does the Human say?",
-		options: ["Moo", "Woof", "Hi", "RingDing"],
+		question: "The name of this movie was Laputa in Japan. What was new name for the overseas release?",
+		options: ["Howl's Moving Castle", "Flying Castle", "Castle in the Sky", "Ponyo"],
 		answer: 2,
-		image: "",
+		image: "assets/images/laputa.gif",
 	},
 }
 
@@ -51,7 +51,7 @@ var ansQuesArray = [];
 var win = 0;
 var loss = 0;
 var none = 0;
-var countdown = 31;
+var countdown = 21;
 var showAnsDet;
 var state = "beforeGame";
 var ranNum;
@@ -101,7 +101,7 @@ var clockRunning = false;
 		$("#stats").remove();
 		var ranQuestion = questions[ranIndex].question;
 		var ranQuesOp = questions[ranIndex].options //list of options
-		var question = $("<h2>");
+		var question = $("<h3>");
 		timerfunc();
 		//var timer = $("<h3>");
 		// $(timer).attr("id", "timer");
@@ -127,12 +127,13 @@ var clockRunning = false;
 		$("#wrong").remove();
 		$("#question").remove();
 		$(".option").remove();
+		$("#image").remove();
 		//$("")of img.remove();
-		countdown = 31;
+		countdown = 21;
 		ranNum = Math.floor(Math.random() * 4) + 1;
 		console.log("second random", ranNum);
 		// Repeat until random answers array length = 4
-		var indexTest=ansQuesArray.indexOf(ranNum)
+		var indexTest=ansQuesArray.indexOf(ranNum);
 		console.log("indexOf: ", indexTest);
 
 		if (ansQuesArray.length < numberOfQues) {
@@ -163,6 +164,7 @@ var clockRunning = false;
 		$(correct).attr("id", "correct");
 		$(correct).html("Correct! The answer was: " + ranQuesAnsStr);
 		$("#questionSec").append(correct);
+		imageGen();
 
 	}
 
@@ -174,8 +176,19 @@ var clockRunning = false;
 		$(wrong).attr("id", "wrong");
 		$(wrong).html("Wrong! The answer was: " + ranQuesAnsStr);
 		$("#questionSec").append(wrong);
+		imageGen();
+
 	}
 
+	function imageGen() {
+		var answerGif = $("<img>");
+		$(answerGif).attr("id", "image");
+        $(answerGif).addClass("img-rounded");  
+        $(answerGif).addClass("image");
+        $(answerGif).attr("src", questions[ranNum].image);
+        $(answerGif).attr("style", "width:30%; height:auto");
+        $("#questionSec").append(answerGif); 
+	}
 	//timout, decrement 30seconds
 	function timerfunc() {
 		if (!clockRunning) {
@@ -187,6 +200,7 @@ var clockRunning = false;
 
 	function unanswered() {
 			countdown--;
+			//ranQuesAnsStr = questions[ranNum].options[ranQuesAnsInd];
 
 			var timer = $("<h3>");
 			$(timer).attr("id", "timer");
@@ -204,6 +218,7 @@ var clockRunning = false;
 				$(unanswered).attr("id", "wrong");
 				$(unanswered).html("Ok.. The answer was: " + ranQuesAnsStr);
 				$("#questionSec").append(unanswered);
+				imageGen();
 				none++;
 				setTimeout(nextQuestionGen, 3000);
 
