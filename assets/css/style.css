@@ -4,9 +4,21 @@ body {
 /*	background-repeat: no-repeat;*/
 }
 
-.questionSec {
-	font-family: 'Press Start 2P', cursive;
-	color: Maroon;
+.title {
+	font-family: 'Rock Salt', cursive;
+	color:white;
+	font-size: 50px
+	font-weight:bold;
+	text-shadow: 4px 4px 4px #aaa;
+}
+
+p:hover { 
+    color: #82d8dc;
+}
+
+#startSec, #timerSec, #questionSec {
+	font-family: 'Sedgwick Ave', cursive;
+	color: #160e53;
 	font-size: 25px
 }
 .charBtn {
@@ -18,4 +30,6 @@ body {
 	opacity: 0.85;
 	filter: alpha(opacity=85);
 }
+
+
 

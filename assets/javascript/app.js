@@ -1,3 +1,21 @@
+$(document).ready(function() {
+
+  // Gets Link for Theme Song
+  var audioElement = document.createElement("audio");
+  audioElement.setAttribute("src", "assets/images/track2.mp3");
+  audioElement.loop = true;
+  audioElement.play();
+  // Theme Button
+  $(".theme-button").on("click", function() {
+    audioElement.loop = true;
+    audioElement.play();
+  });
+  $(".pause-button").on("click", function() {
+    audioElement.pause();
+  });
+
+// ......................................................
+
 //objects 
 var questions = {
 	1: {
@@ -187,7 +205,7 @@ var clockRunning = false;
 				$(unanswered).html("Ok.. The answer was: " + ranQuesAnsStr);
 				$("#questionSec").append(unanswered);
 				none++;
-				setTimeout(nextQuestionGen, 1000);
+				setTimeout(nextQuestionGen, 3000);
 
 			}
 	}
@@ -240,17 +258,18 @@ $("#questionSec" ).on("click", ".option", function() {
 		//display correct for 3 seconds then new question
 		correct();
 		win++;
-		setTimeout(nextQuestionGen, 1000);//calls next question after 3sec
+		setTimeout(nextQuestionGen, 3000);//calls next question after 3sec
 	//calls next question after 3sec
 	}else {//if onclick is false then wrong
 		//display wrong for 3 seconds then new question
 		wrong();
 		loss++;
-		setTimeout(nextQuestionGen, 1000);//calls next question after 3sec
+		setTimeout(nextQuestionGen, 3000);//calls next question after 3sec
 	}
 	//if timout == 0 then unanswered
 
 });
 
 beforeGame("START");
-	
+
+});
