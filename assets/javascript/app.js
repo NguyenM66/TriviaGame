@@ -28,27 +28,31 @@ var questions = {
 
 //varibles
 var numberOfQues = 4; //make dynamic later
-var ranNum;
 var optionId = 0;
 var ansQuesArray = [];
 var win = 0;
 var loss = 0;
+var none = 0;
+var countdown = 31;
 var showAnsDet;
 var state = "beforeGame";
+var ranNum;
 var ranQuesAnsInd;
 var ranQuesAnsStr;
 var ranQuesImg;
+var intervalId;
+var clockRunning = false;
 
 //functions
 
 //state BeforeGame:
 	//start button to start game
-	function beforeGame(){
+	function beforeGame(btnName){
 		var startBtn = $("<button>");
 		$(startBtn).attr("id", "start");
 		$(startBtn).addClass("btn btn-info number");
 		$(startBtn).attr("value", "start");
-		$(startBtn).html("<h3>START!</h3>");
+		$(startBtn).html("<h3>" + btnName + "!</h3>");
 		$("#startSec").append(startBtn);
 		console.log("start");
 	}
@@ -61,6 +65,9 @@ var ranQuesImg;
 	//state InGame:
 	function inGame(){
 		state = "inGame";
+		ansQuesArray = [];
+		win = 0;
+		loss = 0;
 		$("#start").remove();
 		ranNum = Math.floor(Math.random() * 4) + 1;
 		console.log("first random", ranNum);
@@ -73,12 +80,19 @@ var ranQuesImg;
 	//generates the same question again need to randomize
 	function questionGen(ranIndex) {
 	//diplay random timer & questions
+		$("#stats").remove();
 		var ranQuestion = questions[ranIndex].question;
 		var ranQuesOp = questions[ranIndex].options //list of options
-		var question = $("<h3>");
+		var question = $("<h2>");
+		timerfunc();
+		//var timer = $("<h3>");
+		// $(timer).attr("id", "timer");
+		// $(timer).html(countdown + " seconds left");//countdown = 30 and decrement
+		// $("#questionSec").append(timer);
 		$(question).attr("id", "question");
 		$(question).html(ranQuestion);
 		$("#questionSec").append(question);
+
 		//display question and choices		
 		for (var i=0; i < ranQuesOp.length; i++) {
 			var option = $("<p>");
@@ -96,6 +110,7 @@ var ranQuesImg;
 		$("#question").remove();
 		$(".option").remove();
 		//$("")of img.remove();
+		countdown = 31;
 		ranNum = Math.floor(Math.random() * 4) + 1;
 		console.log("second random", ranNum);
 		// Repeat until random answers array length = 4
@@ -114,6 +129,7 @@ var ranQuesImg;
 			questionGen(ranNum);
 
 		}else{
+			stop()
 			gameOver();
 		}
 
@@ -127,7 +143,7 @@ var ranQuesImg;
 		console.log("correct");
 		var correct = $("<h4>");
 		$(correct).attr("id", "correct");
-		$(correct).html("Correct! the answer was: " + ranQuesAnsStr);
+		$(correct).html("Correct! The answer was: " + ranQuesAnsStr);
 		$("#questionSec").append(correct);
 
 	}
@@ -138,14 +154,50 @@ var ranQuesImg;
 		console.log("wrong");
 		var wrong = $("<h4>");
 		$(wrong).attr("id", "wrong");
-		$(wrong).html("Wrong! the answer was: " + ranQuesAnsStr);
+		$(wrong).html("Wrong! The answer was: " + ranQuesAnsStr);
 		$("#questionSec").append(wrong);
 	}
 
 	//timout, decrement 30seconds
-		//diplay the correct answer was: answer
-		//show answer
-		//unanswered++
+	function timerfunc() {
+		if (!clockRunning) {
+			intervalId = setInterval(unanswered, 1000);
+			clockRunning = true;
+			console.log(intervalId);	
+		}
+	}
+
+	function unanswered() {
+			countdown--;
+
+			var timer = $("<h3>");
+			$(timer).attr("id", "timer");
+			$(timer).html(countdown + " seconds left");//countdown = 30 and decrement
+			$("#timerSec").html(timer);
+
+			if (countdown == 0 || ansQuesArray.length == numberOfQues + 1) {
+				$("#question").remove();
+				$(".option").remove();
+				//$("#timer").remove();
+				stop();
+				ranQuesAnsStr = questions[ranNum].options[ranQuesAnsInd];
+				console.log("countdown==0");
+				var unanswered = $("<h4>");
+				$(unanswered).attr("id", "wrong");
+				$(unanswered).html("Ok.. The answer was: " + ranQuesAnsStr);
+				$("#questionSec").append(unanswered);
+				none++;
+				setTimeout(nextQuestionGen, 1000);
+
+			}
+	}
+	
+	function stop() {
+
+      clearInterval(intervalId);
+      clockRunning = false;
+      console.log("inStopFunction: ",intervalId);
+    }
 
 	//showanswer for 4 seconds
 
@@ -156,19 +208,22 @@ var ranQuesImg;
 		console.log("loss ", loss);
 		$("#question").remove();
 		$(".option").remove();
+		$("#timer").remove();
+		//game stats
 		var stats = $("<h4>");
 		$(stats).attr("id", "stats");
-		$(stats).html("Correct: " + win + "<br> Wrong: " + loss + "<br> Unanswered: ");
+		$(stats).html("Correct: " + win + "<br> Wrong: " + loss + "<br> Unanswered: " + none);
 		$("#questionSec").append(stats);
+		//start over button
 		gameReset();
-	//game stats
-	//start over button
-		//clears game and starts over	
+		
 	}
 
+	//game reset
 	function gameReset() {
 		console.log("reset");
-		beforeGame();
+		setTimeout(beforeGame("Play Again"), 1000);
+		//beforeGame("Play Again");
 	}
 
 		//choices are on clicks
@@ -180,16 +235,14 @@ $("#questionSec" ).on("click", ".option", function() {
 	//if onclick is true then correct
 	$("#question").remove();
 	$(".option").remove();
+	$("#timer").remove();
 	if (optionId == ranQuesAnsInd) {
-		//$("#question").remove();
-		//$(".option").remove();
 		//display correct for 3 seconds then new question
 		correct();
 		win++;
 		setTimeout(nextQuestionGen, 1000);//calls next question after 3sec
+	//calls next question after 3sec
 	}else {//if onclick is false then wrong
-		//$("#question").remove();
-		//$(".option").remove();
 		//display wrong for 3 seconds then new question
 		wrong();
 		loss++;
@@ -198,7 +251,6 @@ $("#questionSec" ).on("click", ".option", function() {
 	//if timout == 0 then unanswered
 
 });
-beforeGame();
-	//game reset
 
-//events
+beforeGame("START");
+	
