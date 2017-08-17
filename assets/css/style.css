@@ -3,6 +3,10 @@ body {
 	background-size:cover;
 /*	background-repeat: no-repeat;*/
 }
+/*update panel height*/
+.panel-info {
+    height: calc(100vh - 145px);
+}
 
 .title {
 	font-family: 'Rock Salt', cursive;

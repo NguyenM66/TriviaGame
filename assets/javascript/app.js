@@ -103,10 +103,7 @@ var clockRunning = false;
 		var ranQuesOp = questions[ranIndex].options //list of options
 		var question = $("<h3>");
 		timerfunc();
-		//var timer = $("<h3>");
-		// $(timer).attr("id", "timer");
-		// $(timer).html(countdown + " seconds left");//countdown = 30 and decrement
-		// $("#questionSec").append(timer);
+
 		$(question).attr("id", "question");
 		$(question).html(ranQuestion);
 		$("#questionSec").append(question);
@@ -212,6 +209,7 @@ var clockRunning = false;
 				$(".option").remove();
 				//$("#timer").remove();
 				stop();
+				//scope issue
 				ranQuesAnsStr = questions[ranNum].options[ranQuesAnsInd];
 				console.log("countdown==0");
 				var unanswered = $("<h4>");
